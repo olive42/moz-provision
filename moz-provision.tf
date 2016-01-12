@@ -35,7 +35,16 @@ resource "aws_instance" "moz-provision" {
     provisioner "remote-exec" {
         inline = [
 	    "chmod +x /tmp/script.sh",
-	    "DEBUG=true /tmp/script.sh"
+	    "/tmp/script.sh"
+	]
+	connection {
+	   user = "ubuntu"
+	}
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+	    "python ./moz-flask/hello.py > hello.log 2>&1"
 	]
 	connection {
 	   user = "ubuntu"
