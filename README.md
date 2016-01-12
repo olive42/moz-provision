@@ -6,7 +6,7 @@ https://github.com/olive42/moz-flask repo, and run the Flask demo.
 # Prerequisites
 
 * Terraform
-* credentials on AWS
+* credentials on AWS, with an SSH keypair
 
 # Running
 
@@ -27,6 +27,8 @@ or put the following in a file named `override.tf`:
     default = "XXX"
   }
 ```
+
+Make sure to load the SSH key in your agent (ssh-add /path/to/key.pem)
 
 Run `terraform apply`
 
