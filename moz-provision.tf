@@ -24,9 +24,10 @@ resource "aws_instance" "moz-provision" {
     security_groups = ["${aws_security_group.default.name}"]
     key_name = "${var.key_name}"
 
+    # main script to setup packages and start daemons
     provisioner "file" {
-        source = "script.sh"
-	destination = "/tmp/script.sh"
+        source = "configs/"
+	destination = "/home/ubuntu/"
 	connection {
 	   user = "ubuntu"
 	}
@@ -34,17 +35,8 @@ resource "aws_instance" "moz-provision" {
 
     provisioner "remote-exec" {
         inline = [
-	    "chmod +x /tmp/script.sh",
-	    "/tmp/script.sh"
-	]
-	connection {
-	   user = "ubuntu"
-	}
-    }
-
-    provisioner "remote-exec" {
-        inline = [
-	    "python ./moz-flask/hello.py > hello.log 2>&1"
+	    "chmod +x /home/ubuntu/script.sh",
+	    "/home/ubuntu/script.sh"
 	]
 	connection {
 	   user = "ubuntu"
@@ -78,8 +70,8 @@ resource "aws_security_group" "default" {
 
     # HTTP access from anywhere
     ingress {
-      from_port = 5000
-      to_port = 5000
+      from_port = 80
+      to_port = 80
       protocol = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     }
